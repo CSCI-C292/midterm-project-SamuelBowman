@@ -67,8 +67,7 @@ public class Forklift : MonoBehaviour
     {
         if (other.gameObject.transform.parent != null && other.gameObject.transform.parent.gameObject == destroyables)
         {
-            Destroy(other.gameObject);
-            levelManager.DestroyObject();
+            StartCoroutine(other.gameObject.GetComponent<Destroyable>().DestroyObject());
         }
     }
 }

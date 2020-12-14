@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField] GameObject creditsTextObject;
+    [SerializeField] GameObject creditsMenu;
 
     public void StartButtonPressed()
     {
@@ -14,7 +14,7 @@ public class MenuManager : MonoBehaviour
 
     public void CreditsButtonPressed()
     {
-        creditsTextObject.SetActive(true);
+        creditsMenu.SetActive(true);
     }
 
     public void QuitButtonPressed()
@@ -24,9 +24,9 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Cancel"))
         {
-            creditsTextObject.SetActive(false);
+            creditsMenu.SetActive(false);
         }
     }
 }

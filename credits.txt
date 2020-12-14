@@ -1,0 +1,78 @@
+Programming: Samuel Bowman
+
+
+Models:
+
+Title: Low Poly Forklift 
+Author: Gurkenbier
+Source: https://sketchfab.com/3d-models/low-poly-forklift-fbfb59ffcdf64a708f4caef9c6d1afba
+License: Creative Commons Attribution 4.0
+
+Title: Garage Props Pack
+Author: Abandoned World
+Source: https://assetstore.unity.com/packages/3d/props/industrial/garage-props-pack-132664
+License: Unity Extension Asset
+
+Title: Wood Box Pack
+Author: Abandoned World
+Source: https://assetstore.unity.com/packages/3d/props/industrial/wood-box-pack-15-objects-105811
+License: Unity Extension Asset
+
+
+Textures:
+
+Title: Concrete 030
+Author: CC0 Textures
+Source: https://cc0textures.com/view?id=Concrete030
+License: Creative Commons CC0 1.0
+
+Title: Bare Cinder Blocks Wall - PBR0362
+Author: textures.com
+Source: https://www.textures.com/download/pbr0413/137918
+License: Textures.com License
+
+Title: Fork This Place Menu
+Author: Alex Kiefer (another IU student)
+Source: https://cdn.discordapp.com/attachments/635229032874770465/776694713062785044/menu.png
+License: Creative Commons CC0 1.0
+
+Title: Sign 017 (Forklift Trucks)
+Author: CC0 Textures
+Source: https://cc0textures.com/view?id=Sign017
+License: Creative Commons CC0 1.0
+
+
+Music:
+
+Title: Local Forecast
+Author: Kevin MacLeod
+Source: https://incompetech.com/music/royalty-free/music.html
+License: Creative Commons Attribution 4.0
+
+Title: The Gatekeepser
+Author: Shane Ivers
+Source: https://www.silvermansound.com/free-music/the-gatekeepers
+License: Creative Commons Attribution 4.0
+
+Title: b80 1
+Author: milton.
+Source: https://freesound.org/people/milton./sounds/105251/
+License: Creative Commons Attribution Noncommercial 3.0
+
+Title: Heavy Guitar Chug
+Author: Kodack
+Source: https://freesound.org/people/Kodack/sounds/274087/
+License: Creative Commons CC0 1.0
+
+
+Sound Effects:
+
+Title: Wood Crate Destroy 3
+Author: Bertsz
+Source: https://freesound.org/people/Bertsz/sounds/500900/
+License: Creative Commons CC0 1.0
+
+Title: Engine
+Author: Eponn
+Source: https://freesound.org/people/Eponn/sounds/421001/
+License: Creative Commons CC0 1.0

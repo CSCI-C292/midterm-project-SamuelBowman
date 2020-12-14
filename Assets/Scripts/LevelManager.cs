@@ -3,53 +3,81 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum LevelState
 {
     START,
     PLAY,
+    PAUSE,
     FINSIH,
 }
 
 public class LevelManager : MonoBehaviour
 {
     [HideInInspector] public LevelState state = LevelState.START;
+    public RuntimeData runtimeData;
     int objectsDestroyed = 0;
     int totalDestroyables;
     float time = 0.0f;
     [SerializeField] string nextLevelName;
 
     [SerializeField] GameObject destroyables;
-    [SerializeField] GameObject destroyedCountTextObject;
-    TextMeshProUGUI destroyedCountText;
-    [SerializeField] GameObject timerTextObject;
-    TextMeshProUGUI timerText;
-    [SerializeField] GameObject introText;
-    [SerializeField] GameObject levelTextObject;
-    TextMeshProUGUI levelText;
-    [SerializeField] GameObject gameOverText;
-    [SerializeField] GameObject timeTextObject;
-    TextMeshProUGUI timeText;
-    [SerializeField] GameObject thirdPersonCamera;
-    [SerializeField] GameObject firstPersonCamera;
 
-    // Start is called before the first frame update
+    [SerializeField] GameObject levelCanvas;
+    TextMeshProUGUI destroyedCountText;
+    TextMeshProUGUI timerText;
+
+    GameObject introMenu;
+    TextMeshProUGUI levelText;
+
+    GameObject pausedMenu;
+    Slider musicVolumeSlider;
+    Slider sfxVolumeSlider;
+
+    GameObject levelOverMenu;
+    TextMeshProUGUI timeText;
+
+    GameObject gameOverMenu;
+
+    [SerializeField] GameObject forklift;
+    GameObject thirdPersonCamera;
+    GameObject firstPersonCamera;
+    AudioSource musicAudioSource;
+
+    [SerializeField] AudioClip backgroundMusic;
+    [SerializeField] AudioClip winMusic;
+    [SerializeField] AudioClip loseMusic;
+
     void Start()
     {
+        destroyedCountText = levelCanvas.transform.Find("Destroyed Count Text").GetComponent<TextMeshProUGUI>();
+        timerText = levelCanvas.transform.Find("Timer Text").GetComponent<TextMeshProUGUI>();
+
+        introMenu = levelCanvas.transform.Find("Intro Menu").gameObject;
+        levelText = introMenu.transform.Find("Level Text").GetComponent<TextMeshProUGUI>();
+
+        pausedMenu = levelCanvas.transform.Find("Paused Menu").gameObject;
+        musicVolumeSlider = pausedMenu.transform.Find("Music Volume Slider").GetComponent<Slider>();
+        sfxVolumeSlider = pausedMenu.transform.Find("SFX Volume Slider").GetComponent<Slider>();
+
+        levelOverMenu = levelCanvas.transform.Find("Level Over Menu").gameObject;
+        timeText = levelOverMenu.transform.Find("Time Text").GetComponent<TextMeshProUGUI>();
+
+        gameOverMenu = levelCanvas.transform.Find("Game Over Menu").gameObject;
+
+        thirdPersonCamera = forklift.transform.Find("Third Person Camera").gameObject;
+        firstPersonCamera = forklift.transform.Find("First Person Camera").gameObject;
+        musicAudioSource = forklift.GetComponent<AudioSource>();
+
         totalDestroyables = destroyables.transform.childCount;
-        destroyedCountText = destroyedCountTextObject.GetComponent<TextMeshProUGUI>();
         UpdateDestroyedCount();
-
-        timerText = timerTextObject.GetComponent<TextMeshProUGUI>();
         UpdateTimer();
-
-        levelText = levelTextObject.GetComponent<TextMeshProUGUI>();
         levelText.text = SceneManager.GetActiveScene().name;
-
-        timeText = timeTextObject.GetComponent<TextMeshProUGUI>();
+        musicAudioSource.velocityUpdateMode = AudioVelocityUpdateMode.Dynamic;
+        musicAudioSource.volume = runtimeData.musicVolume;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (state == LevelState.START)
@@ -73,6 +101,17 @@ public class LevelManager : MonoBehaviour
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
+            if (Input.GetButtonDown("Cancel"))
+            {
+                PauseLevel();
+            }
+        }
+        else if (state == LevelState.PAUSE)
+        {
+            if (Input.GetButtonDown("Cancel"))
+            {
+                ResumeLevel();
+            }
         }
         else if (state == LevelState.FINSIH)
         {
@@ -86,13 +125,34 @@ public class LevelManager : MonoBehaviour
     void StartLevel()
     {
         state = LevelState.PLAY;
-        introText.SetActive(false);
+        introMenu.SetActive(false);
+        musicAudioSource.clip = backgroundMusic;
+        musicAudioSource.Play();
+    }
+
+    void PauseLevel()
+    {
+        state = LevelState.PAUSE;
+        pausedMenu.SetActive(true);
+        musicVolumeSlider.normalizedValue = runtimeData.musicVolume;
+        sfxVolumeSlider.normalizedValue = runtimeData.sfxVolume;
+        Time.timeScale = 0;
+    }
+
+    public void ResumeLevel()
+    {
+        state = LevelState.PLAY;
+        pausedMenu.SetActive(false);
+        Time.timeScale = 1;
     }
 
     void FinishLevel()
     {
         state = LevelState.FINSIH;
-        gameOverText.SetActive(true);
+        musicAudioSource.clip = winMusic;
+        musicAudioSource.loop = false;
+        musicAudioSource.Play();
+        levelOverMenu.SetActive(true);
         timeText.text = "Your Time: " + ((int)time / 60).ToString("d2") + ":" + ((int)time % 60).ToString("d2");
     }
 
@@ -104,8 +164,15 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("Main Menu");
+            levelOverMenu.SetActive(false);
+            gameOverMenu.SetActive(true);
         }
+    }
+
+    public void QuitLevel()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Main Menu");
     }
 
     public void DestroyObject()
@@ -127,5 +194,16 @@ public class LevelManager : MonoBehaviour
     void UpdateTimer()
     {
         timerText.text = "Time: " + ((int) time / 60).ToString("d2") + ":" + ((int) time % 60).ToString("d2");
+    }
+
+    public void MusicVolumeChanged()
+    {
+        runtimeData.musicVolume = musicVolumeSlider.normalizedValue;
+        musicAudioSource.volume = runtimeData.musicVolume;
+    }
+
+    public void SfxVolumeChanged()
+    {
+        runtimeData.sfxVolume = sfxVolumeSlider.normalizedValue;
     }
 }
